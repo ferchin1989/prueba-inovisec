@@ -1,0 +1,6 @@
+# Este es un archivo de ejemplo. Crea un archivo local.properties con tu información real.
+# Ruta al SDK de Android (se genera automáticamente por Android Studio)
+# sdk.dir=C\:\\Users\\TuUsuario\\AppData\\Local\\Android\\Sdk
+
+# Clave API para Google Maps
+MAPS_API_KEY=AIzaSyAday8GHQ1QO2tAIH2u9j69CpEEQbW0S4M
