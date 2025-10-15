@@ -90,14 +90,6 @@ Para probar la aplicación, puedes usar las siguientes credenciales:
 - **Retrofit para API**: Se utilizó Retrofit por su facilidad de uso, flexibilidad y soporte para corrutinas
 - **Express.js para backend**: Se eligió Express.js por su simplicidad, eficiencia y amplia adopción en la comunidad
 
-## Mejoras futuras
-
-- Implementación de autenticación con JWT para mayor seguridad
-- Almacenamiento de credenciales usando EncryptedSharedPreferences
-- Implementación de rutas reales usando la API Directions de Google
-- Añadir soporte para modo claro/oscuro basado en la configuración del sistema
-- Implementar tests unitarios y de UI
-
 ## Autor
 
 Raul Fernando Castaño Arias 
