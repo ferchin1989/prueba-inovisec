@@ -88,11 +88,164 @@ fun MapScreen() {
             .fillMaxSize()
             .background(DarkBackground)
     ) {
+        // Barra superior con selector de vehículo y botón IR - ajustada a la imagen
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(140.dp) // Altura ajustada para coincidir con la imagen
+                .background(Color(0xFF121212)) // Color más oscuro como en la imagen
+                .padding(horizontal = 16.dp, vertical = 16.dp)
+                .align(Alignment.TopStart) // Alineado completamente arriba sin espacio gris
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        // Lado izquierdo: Icono y selector de vehículo
+                        Column(
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            // Fila con icono de vehículo - ajustada a la imagen
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Icon(
+                                    imageVector = Icons.Default.DirectionsCar,
+                                    contentDescription = "Vehículo",
+                                    tint = TealPrimary,
+                                    modifier = Modifier.size(36.dp) // El doble de grande
+                                )
+
+                                Text(
+                                    text = "Vehículo",
+                                    style = MaterialTheme.typography.titleMedium, // Texto más grande
+                                    color = TealPrimary,
+                                    modifier = Modifier.padding(start = 8.dp),
+                                    fontWeight = FontWeight.Bold // Texto en negrita
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.height(2.dp))
+
+                            // Línea verde separadora
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth(0.9f)
+                                    .height(2.dp)
+                                    .background(TealPrimary)
+                            )
+
+                            Spacer(modifier = Modifier.height(2.dp))
+
+                            // Texto "Tipo de Vehículo Asignado *"
+                            Text(
+                                text = "Tipo de Vehículo Asignado *",
+                                style = MaterialTheme.typography.titleSmall, // Texto más grande
+                                color = Color.White
+                            )
+
+                            Spacer(modifier = Modifier.height(4.dp))
+
+                            // Selector de vehículo con fondo oscuro - más grande
+                            Button(
+                                onClick = { expanded = true },
+                                modifier = Modifier
+                                    .fillMaxWidth(0.9f)
+                                    .height(56.dp), // El doble de alto
+                                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color(0xFF121212),
+                                    contentColor = Color.White
+                                ),
+                                shape = RoundedCornerShape(4.dp)
+                            ) {
+                                Text(
+                                    selectedVehicleType ?: "Seleccionar Vehículo",
+                                    modifier = Modifier.weight(1f),
+                                    textAlign = TextAlign.Start,
+                                    style = MaterialTheme.typography.bodyLarge // Texto más grande
+                                )
+                                Icon(
+                                    imageVector = Icons.Default.ArrowDropDown,
+                                    contentDescription = "Dropdown Arrow",
+                                    tint = Color.White.copy(alpha = 0.7f),
+                                    modifier = Modifier.size(32.dp) // El doble de grande
+                                )
+                            }
+
+                            // Menú desplegable
+                            DropdownMenu(
+                                expanded = expanded,
+                                onDismissRequest = { expanded = false },
+                                modifier = Modifier
+                                    .width(200.dp)
+                                    .background(Color(0xFF1E1E1E))
+                            ) {
+                                vehicleTypes.forEach { vehicleType ->
+                                    DropdownMenuItem(
+                                        text = {
+                                            Text(
+                                                vehicleType,
+                                                color = Color.White,
+                                                style = MaterialTheme.typography.bodySmall
+                                            )
+                                        },
+                                        onClick = {
+                                            selectedVehicleType = vehicleType
+                                            expanded = false
+                                        }
+                                    )
+                                }
+                            }
+                        }
+
+                        // Botón IR con estilo turquesa - más grande
+                        Button(
+                            onClick = { /* Aquí iría la lógica para iniciar la navegación */ },
+                            enabled = true,
+                            modifier = Modifier
+                                .width(100.dp) // El doble de ancho
+                                .height(100.dp), // Altura ajustada
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = TealPrimary,
+                                contentColor = Color.White
+                            ),
+                            shape = RoundedCornerShape(4.dp),
+                            contentPadding = PaddingValues(0.dp)
+                        ) {
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center,
+                                modifier = Modifier.fillMaxSize()
+                            ) {
+                                // Flecha horizontal
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.Filled.ArrowRightAlt,
+                                    contentDescription = "Ir",
+                                    modifier = Modifier.size(40.dp) // El doble de grande
+                                )
+
+                                Spacer(modifier = Modifier.height(4.dp))
+
+                                // Texto IR
+                                Text(
+                                    text = "IR",
+                                    style = MaterialTheme.typography.headlineSmall, // Texto mucho más grande
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+            
         // Contenedor del mapa de Google Maps con bordes redondeados y márgenes
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 120.dp) // Espacio para la barra superior
+                .padding(top = 140.dp) // Espacio exacto para la barra superior
         ) {
             // Implementación del mapa de Google Maps con estilo oscuro y bordes redondeados
             Card(
@@ -161,179 +314,28 @@ fun MapScreen() {
                         title = "Ubicación actual"
                     )
                 }
-
-                // Botón flotante para centrar en la ubicación actual
-                Box(modifier = Modifier
-                    .fillMaxSize()
-                    .padding(32.dp), // Padding para que no quede tan cerca del borde
-                    contentAlignment = Alignment.BottomEnd
-                ) {
-                    FloatingActionButton(
-                        onClick = {
-                            // Aquí se implementaría la lógica para centrar el mapa en la ubicación actual
-                            // Por ejemplo: cameraPositionState.position = CameraPosition.fromLatLngZoom(currentLocation, 15f)
-                        },
-                        containerColor = TealPrimary,
-                        contentColor = Color.White
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.MyLocation,
-                            contentDescription = "Mi ubicación"
-                        )
-                    }
-                }
             }
 
-            // Barra superior con selector de vehículo y botón IR - ajustada a la imagen
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(140.dp) // Altura ajustada para coincidir con la imagen
-                    .background(Color(0xFF121212)) // Color más oscuro como en la imagen
-                    .padding(horizontal = 16.dp, vertical = 16.dp)
+            // Botón flotante para centrar en la ubicación actual
+            Box(modifier = Modifier
+                .fillMaxSize()
+                .padding(32.dp), // Padding para que no quede tan cerca del borde
+                contentAlignment = Alignment.BottomEnd
             ) {
-                Column(
-                    modifier = Modifier.fillMaxSize()
+                FloatingActionButton(
+                    onClick = {
+                        // Aquí se implementaría la lógica para centrar el mapa en la ubicación actual
+                        // Por ejemplo: cameraPositionState.position = CameraPosition.fromLatLngZoom(currentLocation, 15f)
+                    },
+                    containerColor = TealPrimary,
+                    contentColor = Color.White
                 ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        // Lado izquierdo: Icono y selector de vehículo
-                        Column(
-                            modifier = Modifier.weight(1f)
-                        ) {
-                            // Fila con icono de vehículo - ajustada a la imagen
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(
-                                    imageVector = Icons.Default.DirectionsCar,
-                                    contentDescription = "Vehículo",
-                                    tint = TealPrimary,
-                                    modifier = Modifier.size(36.dp) // El doble de grande
-                                )
-
-                                Text(
-                                    text = "Vehículo",
-                                    style = MaterialTheme.typography.titleMedium, // Texto más grande
-                                    color = TealPrimary,
-                                    modifier = Modifier.padding(start = 8.dp),
-                                    fontWeight = FontWeight.Bold // Texto en negrita
-                                )
-                            }
-
-                            Spacer(modifier = Modifier.height(2.dp))
-
-                            // Línea verde separadora
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth(0.9f)
-                                    .height(2.dp)
-                                    .background(TealPrimary)
-                            )
-
-                            Spacer(modifier = Modifier.height(2.dp))
-
-                            // Texto "Tipo de Vehículo Asignado *"
-                            Text(
-                                text = "Tipo de Vehículo Asignado *",
-                                style = MaterialTheme.typography.titleSmall, // Texto más grande
-                                color = Color.White
-                            )
-
-                            Spacer(modifier = Modifier.height(4.dp))
-
-                            // Selector de vehículo con fondo azul oscuro - más grande
-                            Button(
-                                onClick = { expanded = true },
-                                modifier = Modifier
-                                    .fillMaxWidth(0.9f)
-                                    .height(56.dp), // El doble de alto
-                                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = Color(0xFF0A3D62),
-                                    contentColor = Color.White
-                                ),
-                                shape = RoundedCornerShape(4.dp)
-                            ) {
-                                Text(
-                                    selectedVehicleType ?: "Seleccionar Vehículo",
-                                    modifier = Modifier.weight(1f),
-                                    textAlign = TextAlign.Start,
-                                    style = MaterialTheme.typography.bodyLarge // Texto más grande
-                                )
-                                Icon(
-                                    imageVector = Icons.Default.ArrowDropDown,
-                                    contentDescription = "Dropdown Arrow",
-                                    tint = Color.White.copy(alpha = 0.7f),
-                                    modifier = Modifier.size(32.dp) // El doble de grande
-                                )
-                            }
-
-                            // Menú desplegable
-                            DropdownMenu(
-                                expanded = expanded,
-                                onDismissRequest = { expanded = false },
-                                modifier = Modifier
-                                    .width(200.dp)
-                                    .background(Color(0xFF1E1E1E))
-                            ) {
-                                vehicleTypes.forEach { vehicleType ->
-                                    DropdownMenuItem(
-                                        text = {
-                                            Text(
-                                                vehicleType,
-                                                color = Color.White,
-                                                style = MaterialTheme.typography.bodySmall
-                                            )
-                                        },
-                                        onClick = {
-                                            selectedVehicleType = vehicleType
-                                            expanded = false
-                                        }
-                                    )
-                                }
-                            }
-                        }
-
-                        // Botón IR con estilo turquesa - más grande
-                        Button(
-                            onClick = { /* Aquí iría la lógica para iniciar la navegación */ },
-                            enabled = true,
-                            modifier = Modifier
-                                .width(100.dp) // El doble de ancho
-                                .height(140.dp), // El doble de alto
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = TealPrimary,
-                                contentColor = Color.White
-                            ),
-                            shape = RoundedCornerShape(4.dp),
-                            contentPadding = PaddingValues(0.dp)
-                        ) {
-                            Column(
-                                horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.Center,
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                // Flecha horizontal
-                                Icon(
-                                    imageVector = Icons.AutoMirrored.Filled.ArrowRightAlt,
-                                    contentDescription = "Ir",
-                                    modifier = Modifier.size(40.dp) // El doble de grande
-                                )
-
-                                Spacer(modifier = Modifier.height(4.dp))
-
-                                // Texto IR
-                                Text(
-                                    text = "IR",
-                                    style = MaterialTheme.typography.headlineSmall, // Texto mucho más grande
-                                    fontWeight = FontWeight.Bold
-                                )
-                            }
-                        }
-                    }
+                    Icon(
+                        imageVector = Icons.Default.MyLocation,
+                        contentDescription = "Mi ubicación"
+                    )
                 }
             }
         }
-    }}
+    }
+} 
