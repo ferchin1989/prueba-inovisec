@@ -112,7 +112,7 @@ Para compartir el repositorio en GitHub:
 
 2. Añadir el repositorio remoto:
 ```bash
-git remote add origin https://github.com/usuario/prueba-inovisec.git
+git remote add origin https://github.com/ferchin1989/prueba-inovisec.git
 ```
 
 3. Subir el código al repositorio remoto:

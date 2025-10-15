@@ -54,11 +54,11 @@ El código fuente completo se ha subido a un repositorio Git público:
    git add .
    git commit -m "Entrega inicial: Prueba técnica Inovisec"
    git branch -M main
-   git remote add origin https://github.com/raulfernandocastano/prueba-inovisec.git
+   git remote add origin https://github.com/ferchin1989/prueba-inovisec
    git push -u origin main
    ```
 
-3. El repositorio está disponible en: [https://github.com/raulfernandocastano/prueba-inovisec](https://github.com/raulfernandocastano/prueba-inovisec)
+3. El repositorio está disponible en: [https://github.com/ferchin1989/prueba-inovisec](https://github.com/ferchin1989/prueba-inovisec)
 
 # Credenciales de prueba
 
