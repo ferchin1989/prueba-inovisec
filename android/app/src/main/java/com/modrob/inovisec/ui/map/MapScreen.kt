@@ -44,44 +44,44 @@ fun MapScreen() {
     // Estado para el dropdown de vehículos
     var expanded by remember { mutableStateOf(false) }
     var selectedVehicleType by remember { mutableStateOf<String?>(null) }
-    
+
     // Lista de tipos de vehículos disponibles
     val vehicleTypes = listOf("Sedán", "SUV", "Camioneta", "Motocicleta")
-    
+
     // Configuración del mapa de Google Maps
     val context = LocalContext.current
-    
+
     // Ubicación predeterminada (Ciudad de México)
     val defaultLocation = LatLng(19.432608, -99.133209)
-    
+
     // Estado de la cámara del mapa
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(defaultLocation, 15f)
     }
-    
+
     // Manejo de permisos de ubicación
     var hasLocationPermission by remember { mutableStateOf(
         ContextCompat.checkSelfPermission(
-            context, 
+            context,
             Manifest.permission.ACCESS_FINE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
     )}
-    
+
     // Launcher para solicitar permisos de ubicación
     val locationPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
-        onResult = { isGranted -> 
+        onResult = { isGranted ->
             hasLocationPermission = isGranted
         }
     )
-    
+
     // Solicitar permisos de ubicación al iniciar la pantalla
     LaunchedEffect(Unit) {
         if (!hasLocationPermission) {
             locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         }
     }
-    
+
     // Contenedor principal con fondo oscuro
     Box(
         modifier = Modifier
@@ -105,12 +105,12 @@ fun MapScreen() {
             ) {
                 GoogleMap(
                     modifier = Modifier.fillMaxSize(),
-                cameraPositionState = cameraPositionState,
-                properties = MapProperties(
-                    mapType = MapType.NORMAL, // Tipo de mapa estándar
-                    isMyLocationEnabled = hasLocationPermission, // Mostrar ubicación del usuario si hay permiso
-                    // Estilo de mapa oscuro personalizado
-                    mapStyleOptions = MapStyleOptions("""[
+                    cameraPositionState = cameraPositionState,
+                    properties = MapProperties(
+                        mapType = MapType.NORMAL, // Tipo de mapa estándar
+                        isMyLocationEnabled = hasLocationPermission, // Mostrar ubicación del usuario si hay permiso
+                        // Estilo de mapa oscuro personalizado
+                        mapStyleOptions = MapStyleOptions("""[
                       {
                         "elementType": "geometry",
                         "stylers": [
@@ -146,194 +146,194 @@ fun MapScreen() {
                         ]
                       }
                     ]""")
-                ),
-                // Configuración de la interfaz del mapa
-                uiSettings = MapUiSettings(
-                    zoomControlsEnabled = false, // Ocultar controles de zoom predeterminados
-                    myLocationButtonEnabled = false, // Ocultar botón de ubicación predeterminado
-                    mapToolbarEnabled = false, // Ocultar barra de herramientas
-                    compassEnabled = false // Ocultar brújula
-                )
-            ) {
-                // Marcador en la ubicación predeterminada
-                Marker(
-                    state = MarkerState(position = defaultLocation),
-                    title = "Ubicación actual"
-                )
-            }
-            
-            // Botón flotante para centrar en la ubicación actual
-            Box(modifier = Modifier
-                .fillMaxSize()
-                .padding(32.dp), // Padding para que no quede tan cerca del borde
-                contentAlignment = Alignment.BottomEnd
-            ) {
-                FloatingActionButton(
-                    onClick = { 
-                        // Aquí se implementaría la lógica para centrar el mapa en la ubicación actual
-                        // Por ejemplo: cameraPositionState.position = CameraPosition.fromLatLngZoom(currentLocation, 15f)
-                    },
-                    containerColor = TealPrimary,
-                    contentColor = Color.White
+                    ),
+                    // Configuración de la interfaz del mapa
+                    uiSettings = MapUiSettings(
+                        zoomControlsEnabled = false, // Ocultar controles de zoom predeterminados
+                        myLocationButtonEnabled = false, // Ocultar botón de ubicación predeterminado
+                        mapToolbarEnabled = false, // Ocultar barra de herramientas
+                        compassEnabled = false // Ocultar brújula
+                    )
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.MyLocation,
-                        contentDescription = "Mi ubicación"
+                    // Marcador en la ubicación predeterminada
+                    Marker(
+                        state = MarkerState(position = defaultLocation),
+                        title = "Ubicación actual"
                     )
                 }
-            }
-        }
-        
-        // Barra superior con selector de vehículo y botón IR - ajustada a la imagen
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(120.dp) // Altura ajustada para coincidir con la imagen
-                .background(Color(0xFF121212)) // Color más oscuro como en la imagen
-                .padding(horizontal = 16.dp, vertical = 16.dp)
-        ) {
-            Column(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
+
+                // Botón flotante para centrar en la ubicación actual
+                Box(modifier = Modifier
+                    .fillMaxSize()
+                    .padding(32.dp), // Padding para que no quede tan cerca del borde
+                    contentAlignment = Alignment.BottomEnd
                 ) {
-                    // Lado izquierdo: Icono y selector de vehículo
-                    Column(
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        // Fila con icono de vehículo - ajustada a la imagen
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(
-                                imageVector = Icons.Default.DirectionsCar,
-                                contentDescription = "Vehículo",
-                                tint = TealPrimary,
-                                modifier = Modifier.size(36.dp) // El doble de grande
-                            )
-                            
-                            Text(
-                                text = "Vehículo",
-                                style = MaterialTheme.typography.titleMedium, // Texto más grande
-                                color = TealPrimary,
-                                modifier = Modifier.padding(start = 8.dp),
-                                fontWeight = FontWeight.Bold // Texto en negrita
-                            )
-                        }
-                        
-                        Spacer(modifier = Modifier.height(2.dp))
-                        
-                        // Línea verde separadora
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth(0.9f)
-                                .height(2.dp)
-                                .background(TealPrimary)
-                        )
-                        
-                        Spacer(modifier = Modifier.height(2.dp))
-                    
-                    // Texto "Tipo de Vehículo Asignado *"
-                    Text(
-                        text = "Tipo de Vehículo Asignado *",
-                        style = MaterialTheme.typography.titleSmall, // Texto más grande
-                        color = Color.White
-                    )
-                    
-                    Spacer(modifier = Modifier.height(4.dp))
-                    
-                    // Selector de vehículo con fondo azul oscuro - más grande
-                    Button(
-                        onClick = { expanded = true },
-                        modifier = Modifier
-                            .fillMaxWidth(0.9f)
-                            .height(56.dp), // El doble de alto
-                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF0A3D62),
-                            contentColor = Color.White
-                        ),
-                        shape = RoundedCornerShape(4.dp)
-                    ) {
-                        Text(
-                            selectedVehicleType ?: "Seleccionar Vehículo",
-                            modifier = Modifier.weight(1f),
-                            textAlign = TextAlign.Start,
-                            style = MaterialTheme.typography.bodyLarge // Texto más grande
-                        )
-                        Icon(
-                            imageVector = Icons.Default.ArrowDropDown,
-                            contentDescription = "Dropdown Arrow",
-                            tint = Color.White.copy(alpha = 0.7f),
-                            modifier = Modifier.size(32.dp) // El doble de grande
-                        )
-                    }
-                    
-                    // Menú desplegable
-                    DropdownMenu(
-                        expanded = expanded,
-                        onDismissRequest = { expanded = false },
-                        modifier = Modifier
-                            .width(200.dp)
-                            .background(Color(0xFF1E1E1E))
-                    ) {
-                        vehicleTypes.forEach { vehicleType ->
-                            DropdownMenuItem(
-                                text = { 
-                                    Text(
-                                        vehicleType,
-                                        color = Color.White,
-                                        style = MaterialTheme.typography.bodySmall
-                                    ) 
-                                },
-                                onClick = {
-                                    selectedVehicleType = vehicleType
-                                    expanded = false
-                                }
-                            )
-                        }
-                    }
-                }
-                
-                // Botón IR con estilo turquesa - más grande
-                Button(
-                    onClick = { /* Aquí iría la lógica para iniciar la navegación */ },
-                    enabled = true,
-                    modifier = Modifier
-                        .width(100.dp) // El doble de ancho
-                        .height(140.dp), // El doble de alto
-                    colors = ButtonDefaults.buttonColors(
+                    FloatingActionButton(
+                        onClick = {
+                            // Aquí se implementaría la lógica para centrar el mapa en la ubicación actual
+                            // Por ejemplo: cameraPositionState.position = CameraPosition.fromLatLngZoom(currentLocation, 15f)
+                        },
                         containerColor = TealPrimary,
                         contentColor = Color.White
-                    ),
-                    shape = RoundedCornerShape(4.dp),
-                    contentPadding = PaddingValues(0.dp)
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center,
-                        modifier = Modifier.fillMaxSize()
                     ) {
-                        // Flecha horizontal
                         Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowRightAlt,
-                            contentDescription = "Ir",
-                            modifier = Modifier.size(40.dp) // El doble de grande
-                        )
-                        
-                        Spacer(modifier = Modifier.height(4.dp))
-                        
-                        // Texto IR
-                        Text(
-                            text = "IR",
-                            style = MaterialTheme.typography.headlineSmall, // Texto mucho más grande
-                            fontWeight = FontWeight.Bold
+                            imageVector = Icons.Default.MyLocation,
+                            contentDescription = "Mi ubicación"
                         )
                     }
                 }
             }
+
+            // Barra superior con selector de vehículo y botón IR - ajustada a la imagen
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(140.dp) // Altura ajustada para coincidir con la imagen
+                    .background(Color(0xFF121212)) // Color más oscuro como en la imagen
+                    .padding(horizontal = 16.dp, vertical = 16.dp)
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        // Lado izquierdo: Icono y selector de vehículo
+                        Column(
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            // Fila con icono de vehículo - ajustada a la imagen
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Icon(
+                                    imageVector = Icons.Default.DirectionsCar,
+                                    contentDescription = "Vehículo",
+                                    tint = TealPrimary,
+                                    modifier = Modifier.size(36.dp) // El doble de grande
+                                )
+
+                                Text(
+                                    text = "Vehículo",
+                                    style = MaterialTheme.typography.titleMedium, // Texto más grande
+                                    color = TealPrimary,
+                                    modifier = Modifier.padding(start = 8.dp),
+                                    fontWeight = FontWeight.Bold // Texto en negrita
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.height(2.dp))
+
+                            // Línea verde separadora
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth(0.9f)
+                                    .height(2.dp)
+                                    .background(TealPrimary)
+                            )
+
+                            Spacer(modifier = Modifier.height(2.dp))
+
+                            // Texto "Tipo de Vehículo Asignado *"
+                            Text(
+                                text = "Tipo de Vehículo Asignado *",
+                                style = MaterialTheme.typography.titleSmall, // Texto más grande
+                                color = Color.White
+                            )
+
+                            Spacer(modifier = Modifier.height(4.dp))
+
+                            // Selector de vehículo con fondo azul oscuro - más grande
+                            Button(
+                                onClick = { expanded = true },
+                                modifier = Modifier
+                                    .fillMaxWidth(0.9f)
+                                    .height(56.dp), // El doble de alto
+                                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color(0xFF0A3D62),
+                                    contentColor = Color.White
+                                ),
+                                shape = RoundedCornerShape(4.dp)
+                            ) {
+                                Text(
+                                    selectedVehicleType ?: "Seleccionar Vehículo",
+                                    modifier = Modifier.weight(1f),
+                                    textAlign = TextAlign.Start,
+                                    style = MaterialTheme.typography.bodyLarge // Texto más grande
+                                )
+                                Icon(
+                                    imageVector = Icons.Default.ArrowDropDown,
+                                    contentDescription = "Dropdown Arrow",
+                                    tint = Color.White.copy(alpha = 0.7f),
+                                    modifier = Modifier.size(32.dp) // El doble de grande
+                                )
+                            }
+
+                            // Menú desplegable
+                            DropdownMenu(
+                                expanded = expanded,
+                                onDismissRequest = { expanded = false },
+                                modifier = Modifier
+                                    .width(200.dp)
+                                    .background(Color(0xFF1E1E1E))
+                            ) {
+                                vehicleTypes.forEach { vehicleType ->
+                                    DropdownMenuItem(
+                                        text = {
+                                            Text(
+                                                vehicleType,
+                                                color = Color.White,
+                                                style = MaterialTheme.typography.bodySmall
+                                            )
+                                        },
+                                        onClick = {
+                                            selectedVehicleType = vehicleType
+                                            expanded = false
+                                        }
+                                    )
+                                }
+                            }
+                        }
+
+                        // Botón IR con estilo turquesa - más grande
+                        Button(
+                            onClick = { /* Aquí iría la lógica para iniciar la navegación */ },
+                            enabled = true,
+                            modifier = Modifier
+                                .width(100.dp) // El doble de ancho
+                                .height(140.dp), // El doble de alto
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = TealPrimary,
+                                contentColor = Color.White
+                            ),
+                            shape = RoundedCornerShape(4.dp),
+                            contentPadding = PaddingValues(0.dp)
+                        ) {
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center,
+                                modifier = Modifier.fillMaxSize()
+                            ) {
+                                // Flecha horizontal
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.Filled.ArrowRightAlt,
+                                    contentDescription = "Ir",
+                                    modifier = Modifier.size(40.dp) // El doble de grande
+                                )
+
+                                Spacer(modifier = Modifier.height(4.dp))
+
+                                // Texto IR
+                                Text(
+                                    text = "IR",
+                                    style = MaterialTheme.typography.headlineSmall, // Texto mucho más grande
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
+                        }
+                    }
+                }
+            }
         }
-    }
-}
     }}
