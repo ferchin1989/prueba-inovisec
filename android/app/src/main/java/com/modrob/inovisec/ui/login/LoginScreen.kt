@@ -4,10 +4,6 @@
  * 
  * Esta pantalla implementa un formulario de inicio de sesión con validación
  * y muestra diálogos de error o éxito según corresponda.
- * 
- * @author Tu Nombre
- * @version 1.0
- * @since 2025-10-14
  */
 package com.modrob.inovisec.ui.login
 

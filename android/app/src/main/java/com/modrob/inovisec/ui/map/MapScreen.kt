@@ -1,13 +1,6 @@
 /**
  * MapScreen.kt
  * Pantalla del mapa para la aplicación Inovisec
- * 
- * Esta pantalla muestra un mapa de Google Maps con estilo oscuro,
- * permite seleccionar un tipo de vehículo y tiene un botón para iniciar la navegación.
- * 
- * @author Tu Nombre
- * @version 1.0
- * @since 2025-10-14
  */
 package com.modrob.inovisec.ui.map
 
@@ -28,6 +21,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -94,15 +88,23 @@ fun MapScreen() {
             .fillMaxSize()
             .background(DarkBackground)
     ) {
-        // Contenedor del mapa de Google Maps
+        // Contenedor del mapa de Google Maps con bordes redondeados y márgenes
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(top = 120.dp) // Espacio para la barra superior
         ) {
-            // Implementación del mapa de Google Maps con estilo oscuro
-            GoogleMap(
-                modifier = Modifier.fillMaxSize(),
+            // Implementación del mapa de Google Maps con estilo oscuro y bordes redondeados
+            Card(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp) // Margen alrededor del mapa
+                    .padding(bottom = 16.dp), // Margen adicional en la parte inferior
+                shape = RoundedCornerShape(20.dp), // Bordes redondeados
+                colors = CardDefaults.cardColors(containerColor = Color.Transparent)
+            ) {
+                GoogleMap(
+                    modifier = Modifier.fillMaxSize(),
                 cameraPositionState = cameraPositionState,
                 properties = MapProperties(
                     mapType = MapType.NORMAL, // Tipo de mapa estándar
@@ -161,21 +163,24 @@ fun MapScreen() {
             }
             
             // Botón flotante para centrar en la ubicación actual
-            FloatingActionButton(
-                onClick = { 
-                    // Aquí se implementaría la lógica para centrar el mapa en la ubicación actual
-                    // Por ejemplo: cameraPositionState.position = CameraPosition.fromLatLngZoom(currentLocation, 15f)
-                },
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(16.dp),
-                containerColor = TealPrimary,
-                contentColor = Color.White
+            Box(modifier = Modifier
+                .fillMaxSize()
+                .padding(32.dp), // Padding para que no quede tan cerca del borde
+                contentAlignment = Alignment.BottomEnd
             ) {
-                Icon(
-                    imageVector = Icons.Default.MyLocation,
-                    contentDescription = "Mi ubicación"
-                )
+                FloatingActionButton(
+                    onClick = { 
+                        // Aquí se implementaría la lógica para centrar el mapa en la ubicación actual
+                        // Por ejemplo: cameraPositionState.position = CameraPosition.fromLatLngZoom(currentLocation, 15f)
+                    },
+                    containerColor = TealPrimary,
+                    contentColor = Color.White
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.MyLocation,
+                        contentDescription = "Mi ubicación"
+                    )
+                }
             }
         }
         
@@ -187,33 +192,47 @@ fun MapScreen() {
                 .background(Color(0xFF121212)) // Color más oscuro como en la imagen
                 .padding(horizontal = 16.dp, vertical = 16.dp)
         ) {
-            Row(
-                modifier = Modifier.fillMaxSize(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+            Column(
+                modifier = Modifier.fillMaxSize()
             ) {
-                // Lado izquierdo: Icono y selector de vehículo
-                Column(
-                    modifier = Modifier.weight(1f)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    // Fila con icono de vehículo - ajustada a la imagen
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            imageVector = Icons.Default.DirectionsCar,
-                            contentDescription = "Vehículo",
-                            tint = TealPrimary,
-                            modifier = Modifier.size(36.dp) // El doble de grande
+                    // Lado izquierdo: Icono y selector de vehículo
+                    Column(
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        // Fila con icono de vehículo - ajustada a la imagen
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                imageVector = Icons.Default.DirectionsCar,
+                                contentDescription = "Vehículo",
+                                tint = TealPrimary,
+                                modifier = Modifier.size(36.dp) // El doble de grande
+                            )
+                            
+                            Text(
+                                text = "Vehículo",
+                                style = MaterialTheme.typography.titleMedium, // Texto más grande
+                                color = TealPrimary,
+                                modifier = Modifier.padding(start = 8.dp),
+                                fontWeight = FontWeight.Bold // Texto en negrita
+                            )
+                        }
+                        
+                        Spacer(modifier = Modifier.height(2.dp))
+                        
+                        // Línea verde separadora
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth(0.9f)
+                                .height(2.dp)
+                                .background(TealPrimary)
                         )
                         
-                        Text(
-                            text = "Vehículo",
-                            style = MaterialTheme.typography.titleMedium, // Texto más grande
-                            color = TealPrimary,
-                            modifier = Modifier.padding(start = 8.dp)
-                        )
-                    }
-                    
-                    Spacer(modifier = Modifier.height(2.dp))
+                        Spacer(modifier = Modifier.height(2.dp))
                     
                     // Texto "Tipo de Vehículo Asignado *"
                     Text(
@@ -317,3 +336,4 @@ fun MapScreen() {
         }
     }
 }
+    }}
