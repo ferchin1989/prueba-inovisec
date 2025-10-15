@@ -65,14 +65,6 @@ Para este proyecto, se recomienda seguir el flujo de trabajo Git Flow:
 ### Ramas principales
 
 - **main**: Contiene el código de producción estable
-- **develop**: Rama de desarrollo principal
-
-### Ramas de soporte
-
-- **feature/**: Para nuevas características (ej. `feature/login-screen`)
-- **bugfix/**: Para corrección de errores (ej. `bugfix/login-validation`)
-- **release/**: Para preparar versiones para producción (ej. `release/v1.0.0`)
-- **hotfix/**: Para correcciones urgentes en producción (ej. `hotfix/auth-error`)
 
 ## Comandos Git comunes
 
@@ -111,18 +103,6 @@ git checkout develop
 git merge --no-ff release/v1.0.0
 git branch -d release/v1.0.0
 ```
-
-## Convenciones para mensajes de commit
-
-Para mantener un historial de commits claro y útil, se recomienda seguir estas convenciones:
-
-- **feat**: Nueva característica (ej. `feat: Implementar pantalla de login`)
-- **fix**: Corrección de un error (ej. `fix: Corregir validación de email`)
-- **docs**: Cambios en la documentación (ej. `docs: Actualizar README`)
-- **style**: Cambios que no afectan el significado del código (ej. `style: Formatear código`)
-- **refactor**: Cambios en el código que no corrigen errores ni añaden características (ej. `refactor: Simplificar lógica de autenticación`)
-- **test**: Añadir o corregir pruebas (ej. `test: Añadir pruebas para LoginViewModel`)
-- **chore**: Cambios en el proceso de construcción o herramientas auxiliares (ej. `chore: Actualizar dependencias`)
 
 ## Integración con GitHub
 

@@ -123,14 +123,6 @@ Se implementaron varios mecanismos de feedback:
 2. **Validación de entrada**: Tanto en cliente como en servidor
 3. **Manejo de errores**: Sin exponer información sensible en mensajes de error
 
-## Mejoras futuras
-
-1. **Autenticación robusta**: Implementar JWT y almacenamiento seguro de credenciales
-2. **Navegación real**: Utilizar la API Directions de Google para rutas reales
-3. **Persistencia de datos**: Almacenamiento local con Room o DataStore
-4. **Testing**: Implementar tests unitarios, de integración y UI
-5. **CI/CD**: Configurar integración y despliegue continuos
-
 ## Conclusión
 
 Las decisiones técnicas tomadas en este proyecto se orientaron a crear una aplicación moderna, mantenible y con buena experiencia de usuario, utilizando las mejores prácticas y tecnologías recomendadas para el desarrollo Android actual.
